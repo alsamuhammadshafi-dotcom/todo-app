@@ -74,7 +74,7 @@
 
     if (task === "") return;
 
-    tasks.push(task);
+    tasks.push({ text: task, completed: false });
     saveTasks();
     displayTasks();
 
@@ -89,12 +89,28 @@
       let li = document.createElement("li");
 
       let span = document.createElement("span");
-      span.textContent = task;
+      span.textContent = task.text;
+
+      if (task.completed) {
+        span.style.textDecoration = "line-through";
+      }
 
       span.onclick = function() {
-        span.style.textDecoration = "line-through";
+        task.completed = !task.completed;
+        saveTasks();
+        displayTasks();
       };
-
+let editBtn = document.createElement("button");
+editBtn.textContent = "Edit";
+editBtn.onclick = function() {
+  let newTask = prompt("Edit your task:", task.text);
+  if (newTask !== null && newTask !== "") {
+    task.text = newTask;
+    saveTasks();
+    displayTasks();
+  }
+};
+li.appendChild(editBtn);
       let btn = document.createElement("button");
       btn.textContent = "Delete";
       btn.onclick = function() {
@@ -121,7 +137,6 @@
     displayTasks();
   }
 
-  // run when page loads
   loadTasks();
   </script>
 
